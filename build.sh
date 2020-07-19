@@ -1,5 +1,5 @@
 #!/bin/bash
 
-mkdir biuld
+mkdir build
 
 make all

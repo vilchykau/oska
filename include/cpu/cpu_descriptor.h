@@ -1,0 +1,84 @@
+#include <stdint.h>
+
+#define CPU_DESCRIPTOR_SYSTEM 0
+#define CPU_DESCRIPTOR_DATA 1
+
+#define CPU_DESCRIPTOR_P_16 0
+#define CPU_DESCRIPTOR_P_32 1
+
+
+struct cpu_descriptor{
+    uint32_t r1;
+    uint32_t r2;
+};
+
+/*
+        Defines the location of byte 0 of the segment within the 4-GByte linear address space. The
+    processor puts together the three base address fields to form a single 32-bit value. Segment base
+    addresses should be aligned to 16-byte boundaries. Although 16-byte alignment is not required,
+    this alignment allows programs to maximize performance by aligning code and data on 16-byte
+    boundaries. 
+*/
+void cpu_descriptor_write_base(struct cpu_descriptor* descr, uint32_t addr);
+
+
+
+/*
+        Specifies the size of the segment. The processor puts together the two segment limit fields to form
+    a 20-bit value. The processor interprets the segment limit in one of two ways, depending on the
+    setting of the G (granularity) flag:
+        • If the granularity flag is clear, the segment size can range from 1 byte to 1 MByte, in byte increments.
+        • If the granularity flag is set, the segment size can range from 4 KBytes to 4 GBytes, in 4-KByte increments.
+
+        The processor uses the segment limit in two different ways, depending on whether the segment is
+    an expand-up or an expand-down segment. See Section 3.4.5.1, “Code- and Data-Segment
+    Descriptor Types”, for more information about segment types. For expand-up segments, the offset
+    in a logical address can range from 0 to the segment limit. Offsets greater than the segment limit
+    generate general-protection exceptions (#GP, for all segments other than SS) 
+    or stack-fault exceptions (#SS for the SS segment).
+    For expand-down segments, the segment limit has the reverse
+    function; the offset can range from the segment limit plus 1 to FFFFFFFFH or FFFFH, depending on
+    the setting of the B flag. Offsets less than or equal to the segment limit generate general-protection
+    exceptions or stack-fault exceptions. Decreasing the value in the segment limit field for an expanddown 
+    segment allocates new memory at the bottom of the segment's address space, rather than at
+    the top. IA-32 architecture stacks always grow downwards, making this mechanism convenient for
+    expandable stacks
+*/
+void cpu_descriptor_write_limit(struct cpu_descriptor* descr, uint32_t limit);
+
+
+/*
+        Specifies whether the segment descriptor is for a system segment (S flag is clear) or a code or data
+    segment (S flag is set).
+*/
+void cpu_descriptor_write_s_type(struct cpu_descriptor* descr, uint32_t s);
+
+
+/*
+        Indicates the segment or gate type and specifies the kinds of access that can be made to the
+    segment and the direction of growth. The interpretation of this field depends on whether the
+    descriptor type flag specifies an application (code or data) descriptor or a system descriptor. The
+    encoding of the type field is different for code, data, and system descriptors (see Figure 5-1). See
+    Section 3.4.5.1, “Code- and Data-Segment Descriptor Types”, for a description of how this field is
+    used to specify code and data-segment types.
+*/
+void cpu_descriptor_write_type(struct cpu_descriptor* descr, uint32_t type);
+
+
+/*
+        Specifies the privilege level of the segment. The privilege level can range from 0 to 3, with 0 being
+    the most privileged level. The DPL is used to control access to the segment. See Section 5.5, “Privilege Levels”,
+    for a description of the relationship of the DPL to the CPL of the executing code
+    segment and the RPL of a segment selector.
+*/
+void cpu_descriptor_write_dpl(struct cpu_descriptor* d, uint32_t dpl);
+
+
+/*
+        Indicates whether the segment is present in memory (set) or not present (clear). If this flag is clear,
+    the processor generates a segment-not-present exception (#NP) when a segment selector that
+    points to the segment descriptor is loaded into a segment register. Memory management software
+    can use this flag to control which segments are actually loaded into physical memory at a given
+    time. It offers a control in addition to paging for managing virtual memory.
+*/
+void cpu_descriptor_write_p_flag(struct cpu_descriptor* d, uint32_t p);

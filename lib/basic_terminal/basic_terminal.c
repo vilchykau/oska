@@ -80,9 +80,11 @@ void divide_by_zero(){
 	terminal_writestring("Zero\n");
 }
 
-void termial_write_hex(int value){
-	char s[2];
-	s[1] = HEX_TABLE[value % 0xF];
-	s[0] = HEX_TABLE[value / 0xF];
-	terminal_write(s, 2);
+void termial_write_hex(uint32_t value){
+	char s[8];
+	for(int i = 8; i != 0; --i){
+		s[i-1] = HEX_TABLE[value%16];
+		value /= 16;
+	}
+	terminal_write(s, 8);
 }

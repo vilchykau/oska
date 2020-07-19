@@ -27,4 +27,4 @@ void terminal_putentryat(char c, uint8_t color, size_t x, size_t y);
 void terminal_putchar(char c);
 void terminal_write(const char* data, size_t size);
 void terminal_writestring(const char* data);
-void termial_write_hex(int value);
+void termial_write_hex(uint32_t value);
