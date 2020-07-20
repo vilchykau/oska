@@ -2,7 +2,7 @@ GLOBAL_INC_DIR = include
 GLOBAL_LOB_PATH = lib
 BP = build
 
-subdirs = lib build kernel
+subdirs = lib kernel
 
 all: make_subs
 
