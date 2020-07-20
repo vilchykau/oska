@@ -36,3 +36,13 @@ void cpu_descriptor_write_p_flag(struct cpu_descriptor* d, uint32_t p){
     d->r1 |= (s & 0x1) << 15;
 }
 
+void cpu_descriptor_write_d_flag(struct cpu_descriptor* d, uint32_t d){
+    d->r1 &= ~((uint32_t)1 << 22);
+    d->r1 |= (s & 0x1) << 22;
+}
+
+void cpu_descriptor_write_g_flag(struct cpu_descriptor* d, uint32_t g){
+    d->r1 &= ~((uint32_t)1 << 23);
+    d->r1 |= (s & 0x1) << 23;
+}
+

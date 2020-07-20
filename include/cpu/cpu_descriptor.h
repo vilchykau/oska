@@ -1,11 +1,16 @@
 #include <stdint.h>
 
-#define CPU_DESCRIPTOR_SYSTEM 0
-#define CPU_DESCRIPTOR_DATA 1
+#define CPU_DESCRIPTOR_S_SYSTEM 0
+#define CPU_DESCRIPTOR_S_DATA 1
 
-#define CPU_DESCRIPTOR_P_16 0
-#define CPU_DESCRIPTOR_P_32 1
+#define CPU_DESCRIPTOR_P_NOTPRESENT 0
+#define CPU_DESCRIPTOR_P_PRESENT 1
 
+#define CPU_DESCRIPTOR_D_16 0
+#define CPU_DESCRIPTOR_D_32 1
+
+#define CPU_DESCRIPTOR_G_1b_1m 0    /* inc: 1 byte */
+#define CPU_DESCRIPTOR_G_4k_4g 1    /* inc: 4k     */
 
 struct cpu_descriptor{
     uint32_t r1;
@@ -82,3 +87,22 @@ void cpu_descriptor_write_dpl(struct cpu_descriptor* d, uint32_t dpl);
     time. It offers a control in addition to paging for managing virtual memory.
 */
 void cpu_descriptor_write_p_flag(struct cpu_descriptor* d, uint32_t p);
+
+
+/*
+      Performs different functions depending on whether the segment descriptor is an executable code
+    segment, an expand-down data segment, or a stack segment. (This flag should always be set to 1
+    for 32-bit code and data segments and to 0 for 16-bit code and data segments.)
+*/
+void cpu_descriptor_write_d_flag(struct cpu_descriptor* d, uint32_t d);
+
+
+/*
+        Determines the scaling of the segment limit field. When the granularity flag is clear, the segment
+    limit is interpreted in byte units; when flag is set, the segment limit is interpreted in 4-KByte units.
+    (This flag does not affect the granularity of the base address; it is always byte granular.) When the
+    granularity flag is set, the twelve least significant bits of an offset are not tested when checking the
+    offset against the segment limit. For example, when the granularity flag is set, a limit of 0 results in
+    valid offsets from 0 to 4095.
+*/  
+void cpu_descriptor_write_g_flag(struct cpu_descriptor* d, uint32_t g){
