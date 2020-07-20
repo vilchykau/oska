@@ -94,7 +94,7 @@ void cpu_descriptor_write_p_flag(struct cpu_descriptor* d, uint32_t p);
     segment, an expand-down data segment, or a stack segment. (This flag should always be set to 1
     for 32-bit code and data segments and to 0 for 16-bit code and data segments.)
 */
-void cpu_descriptor_write_d_flag(struct cpu_descriptor* d, uint32_t d);
+void cpu_descriptor_write_d_flag(struct cpu_descriptor* de, uint32_t d);
 
 
 /*
@@ -105,4 +105,4 @@ void cpu_descriptor_write_d_flag(struct cpu_descriptor* d, uint32_t d);
     offset against the segment limit. For example, when the granularity flag is set, a limit of 0 results in
     valid offsets from 0 to 4095.
 */  
-void cpu_descriptor_write_g_flag(struct cpu_descriptor* d, uint32_t g){
+void cpu_descriptor_write_g_flag(struct cpu_descriptor* d, uint32_t g);
