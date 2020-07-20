@@ -12,9 +12,28 @@
 #define CPU_DESCRIPTOR_G_1b_1m 0    /* inc: 1 byte */
 #define CPU_DESCRIPTOR_G_4k_4g 1    /* inc: 4k     */
 
+
+#define CPU_D_TYPE_READ_ONLY               0
+#define CPU_D_TYPE_READ_ONLY_ACC           0b1
+#define CPU_D_TYPE_READ_WRITE              0b10
+#define CPU_D_TYPE_READ_WRITE_ACC          0b11
+#define CPU_D_TYPE_READ_ONLY_EXPDOWN       0b100
+#define CPU_D_TYPE_READ_ONLY_EXPDOWN_ACC   0b101
+#define CPU_D_TYPE_READ_WRITE_EXPDOWN      0b110
+#define CPU_D_TYPE_READ_WRITE_EXPDOWN_ACC  0b111
+
+#define CPU_D_TYPE_EXE_ONLY                0b1000
+#define CPU_D_TYPE_EXE_ONLY_ACC            0b1001
+#define CPU_D_TYPE_EXE_READ                0b1010
+#define CPU_D_TYPE_EXE_READ_ACC            0b1011
+#define CPU_D_TYPE_EXE_ONLY_CONF           0b1100
+#define CPU_D_TYPE_EXE_ONLY_CONF_ACC       0b1101
+#define CPU_D_TYPE_EXE_READ_CONF           0b1110
+#define CPU_D_TYPE_EXE_READ_CONF_ACC       0b1111
+
 struct cpu_descriptor{
-    uint32_t r1;
     uint32_t r2;
+    uint32_t r1;
 };
 
 /*
