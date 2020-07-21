@@ -88,3 +88,10 @@ void termial_write_hex(uint32_t value){
 	}
 	terminal_write(s, 8);
 }
+
+void terminal_write_int(uint32_t value){
+	int d = 0;
+	for(uint32_t i = value; i != 0; i/=10){
+		++d;
+	}
+}

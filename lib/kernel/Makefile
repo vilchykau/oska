@@ -4,7 +4,7 @@ BP = $(addprefix ../, $(PRE_BP))
 DEF_FLAGS = -std=gnu99 -ffreestanding -O2 -Wall -Wextra -m32 -I$(INC)
 
 all: $(BP)/kernel_descriptor.o 
-	ar rcs $(BP)/kernel_lib.a $(BP)/kernel_descriptor.o $(BP)/cpu_descriptor.o
+	ar rcs $(BP)/kernel_lib.a $(BP)/cpu_segment_selector.o $(BP)/kernel_descriptor.o $(BP)/cpu_descriptor.o $(BP)/cpu_descriptor_asm.o
 
 $(BP)/kernel_descriptor.o: kernel_descriptor.c
 	gcc -c kernel_descriptor.c $(DEF_FLAGS)

@@ -24,7 +24,7 @@ uint8_t kernel_alloc_program_pack(struct cpu_segment_selector_pack* pack){
 			}
 		}
 	}
-	return NULL;
+	return 0;
 }
 
 void init_kernel_code_desc(struct cpu_descriptor* d){
