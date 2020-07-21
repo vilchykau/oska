@@ -1,4 +1,9 @@
+#ifndef CPU_DESCRIPTOR_H
+#define CPU_DESCRIPTOR_H
+
 #include <stdint.h>
+
+#include "cpu/cpu_segment_selector.h"
 
 #define CPU_DESCRIPTOR_S_SYSTEM 0
 #define CPU_DESCRIPTOR_S_DATA 1
@@ -30,6 +35,8 @@
 #define CPU_D_TYPE_EXE_ONLY_CONF_ACC       0b1101
 #define CPU_D_TYPE_EXE_READ_CONF           0b1110
 #define CPU_D_TYPE_EXE_READ_CONF_ACC       0b1111
+
+#define GDT_MAX 8192
 
 struct cpu_descriptor{
     uint32_t r2;
@@ -125,3 +132,11 @@ void cpu_descriptor_write_d_flag(struct cpu_descriptor* de, uint32_t d);
     valid offsets from 0 to 4095.
 */  
 void cpu_descriptor_write_g_flag(struct cpu_descriptor* d, uint32_t g);
+
+
+void* get_GDT();
+
+
+void load_descriptor(struct cpu_descriptor* d, struct cpu_segment_selector* sel);
+
+#endif //CPU_DESCRIPTOR_H
