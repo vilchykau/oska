@@ -11,7 +11,7 @@ re:
 	make all
 
 clear:
-	(cd build;make clear)
+	rm -rf build/*.o build/*.a build/*.bin
 
 make_subs:
 	@for i in $(subdirs); do\
