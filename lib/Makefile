@@ -2,7 +2,7 @@ INC = $(addprefix ../, $(PRE_INC))
 BP = $(addprefix ../, $(PRE_BP))
 BACK_SLASHING = $(addprefix ../, $(PRE_BACK))
 
-subdirs = cpu basic_terminal
+subdirs = cpu basic_terminal kernel
 
 all: make_subs
 
