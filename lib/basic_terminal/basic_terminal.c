@@ -90,8 +90,16 @@ void termial_write_hex(uint32_t value){
 }
 
 void terminal_write_int(uint32_t value){
+	char s[10];
 	int d = 0;
 	for(uint32_t i = value; i != 0; i/=10){
 		++d;
 	}
+
+	for(int i = d; i != 0; --i){
+		s[i-1] = '0' + (char)(value % 10);
+		value /= 10;
+	}
+
+	terminal_write(s, d);
 }

@@ -28,3 +28,4 @@ void terminal_putchar(char c);
 void terminal_write(const char* data, size_t size);
 void terminal_writestring(const char* data);
 void termial_write_hex(uint32_t value);
+void terminal_write_int(uint32_t value);
