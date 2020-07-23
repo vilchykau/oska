@@ -12,6 +12,18 @@ void init_gdt(){
 	}
 }
 
+uint8_t kernel_alloc_segment_selector(struct cpu_segment_selector* sel, uint16_t* start_pos){
+	struct cpu_descriptor* gtd = (struct cpu_descriptor*)get_GDT();
+	for(; *start_pos < GDT_MAX; ++(*start_pos)){
+		if(gtd[*start_pos].r1 == 0 && gtd[*start_pos].r2 == 0){
+			cpu_segment_selector_set_id(sel, *start_pos);
+			++(*start_pos);
+			return 1;
+		}
+	}
+	return 0;
+}
+
 uint8_t kernel_alloc_program_pack(struct cpu_segment_selector_pack* pack){
 	struct cpu_descriptor* gtd = (struct cpu_descriptor*)get_GDT();
 	uint8_t id = 0;
