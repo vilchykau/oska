@@ -43,6 +43,11 @@ typedef struct{
     uint32_t r1;
 } cpu_descriptor;
 
+typedef struct{
+    uint32_t r1;
+    uint32_t r2;
+} cpu_call_gate_descriptor;
+
 /*
         Defines the location of byte 0 of the segment within the 4-GByte linear address space. The
     processor puts together the three base address fields to form a single 32-bit value. Segment base
@@ -139,4 +144,11 @@ void* get_GDT();
 
 void load_descriptor(cpu_descriptor* d, cpu_segment_selector* sel);
 
+void cpu_cgd_init(cpu_call_gate_descriptor* desc);
+void cpu_cgd_set_segment_selector(cpu_call_gate_descriptor* desc, cpu_segment_selector* sel);
+void cpu_cgd_set_offset(cpu_call_gate_descriptor* desc, uint32_t offset);
+void cpu_cgd_set_dpl(cpu_call_gate_descriptor* desc, uint32_t dpl);
+void cpu_cgd_set_p(cpu_call_gate_descriptor* desc, uint32_t p);
+void cpu_cgd_set_param_cout(cpu_call_gate_descriptor* desc, uint32_t param_count);
+//  void cpu_cgd_set_segment_selector(cpu_call_gate_descriptor* desc, cpu_segment_selector sel);
 #endif //CPU_DESCRIPTOR_H

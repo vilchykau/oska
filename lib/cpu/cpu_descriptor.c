@@ -50,3 +50,43 @@ void load_descriptor(cpu_descriptor* d, cpu_segment_selector* sel){
     cpu_descriptor* gtd = get_GDT();
     gtd[cpu_segment_selector_get_id(sel)] = *d;
 }
+
+
+void cpu_cgd_init(cpu_call_gate_descriptor* desc){
+    desc->r2 = 0;
+    desc->r2 |= (uint32_t)0b1100 << 8;
+}
+
+void cpu_cgd_set_segment_selector(cpu_call_gate_descriptor* desc,
+    cpu_segment_selector* sel){
+    desc->r1 &= 0xFFFF;
+    desc->r1 |= sel->value << 16;
+}
+/*
+void cpu_cgd_set_segment_selector(cpu_call_gate_descriptor* desc,
+    cpu_segment_selector sel){
+    cpu_cgd_set_segment_selector(desc, &sel);
+}*/
+
+void cpu_cgd_set_offset(cpu_call_gate_descriptor* desc, uint32_t offset){
+    desc->r1 &= 0xFFFF0000;
+    desc->r1 |= offset & 0xFFFF;
+
+    desc->r2 &= 0xFFFF;
+    desc->r2 |= offset & 0xFFFF0000;
+}
+
+void cpu_cgd_set_dpl(cpu_call_gate_descriptor* desc, uint32_t dpl){
+    desc->r2 &= ~((uint32_t)0b11 << 13);
+    desc->r2 |= (dpl & 0b11) << 13;
+}
+
+void cpu_cgd_set_p(cpu_call_gate_descriptor* desc, uint32_t p){
+    desc->r2 &= ~((uint32_t)0b1 << 15);
+    desc->r2 |= (p & 1) << 15;
+}
+
+void cpu_cgd_set_param_cout(cpu_call_gate_descriptor* desc, uint32_t param_count){
+    desc->r2 &= ~((uint32_t)0b11111);
+    desc->r2 |= param_count & 0b11111;
+}
