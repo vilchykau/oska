@@ -3,20 +3,20 @@
 
 #include <stdint.h>
 
-struct cpu_segment_selector{
+typedef struct{
     uint16_t value;
-};
+} cpu_segment_selector;
 
 #define CPU_SEL_CODE  0
 #define CPU_SEL_DATA  1
 #define CPU_SEL_STACK 2
 
-struct cpu_segment_selector_pack{
-    struct cpu_segment_selector sels[3];
-};
+typedef struct{
+    cpu_segment_selector sels[3];
+} cpu_segment_selector_pack;
 
-uint32_t cpu_segment_selector_get_id(struct cpu_segment_selector* sel);
-void cpu_segment_selector_set_id(struct cpu_segment_selector* sel, uint16_t id);
+uint32_t cpu_segment_selector_get_id(cpu_segment_selector* sel);
+void cpu_segment_selector_set_id(cpu_segment_selector* sel, uint16_t id);
 
 #define CPU_SEG_SEL_GETID(SEL) (SEL.value >> 3)
 #define CPU_SEG_SEL_SETID(SEL, ID) (SEL.value = (SEL.value & 0x7) | (ID << 3))

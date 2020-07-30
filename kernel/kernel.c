@@ -10,7 +10,7 @@ void kernel_main(void)
 {
 	init_gdt();
 
-	struct cpu_segment_selector_pack system_pack;
+	cpu_segment_selector_pack system_pack;
 	kernel_alloc_program_pack(&system_pack);
 
 

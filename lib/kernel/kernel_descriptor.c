@@ -12,7 +12,7 @@ void init_gdt(){
 	}
 }
 
-uint8_t kernel_alloc_segment_selector(struct cpu_segment_selector* sel, uint16_t* start_pos){
+uint8_t kernel_alloc_segment_selector(cpu_segment_selector* sel, uint16_t* start_pos){
 	cpu_descriptor* gtd = (cpu_descriptor*)get_GDT();
 	for(; *start_pos < GDT_MAX; ++(*start_pos)){
 		if(gtd[*start_pos].r1 == 0 && gtd[*start_pos].r2 == 0){
@@ -24,7 +24,7 @@ uint8_t kernel_alloc_segment_selector(struct cpu_segment_selector* sel, uint16_t
 	return 0;
 }
 
-uint8_t kernel_alloc_program_pack(struct cpu_segment_selector_pack* pack){
+uint8_t kernel_alloc_program_pack(cpu_segment_selector_pack* pack){
 	cpu_descriptor* gtd = (cpu_descriptor*)get_GDT();
 	uint8_t id = 0;
 	for(int i = 1; i < GDT_MAX; ++i){
@@ -72,7 +72,7 @@ void init_kernel_data_desc(cpu_descriptor* d){
 	cpu_descriptor_write_g_flag(d, CPU_DESCRIPTOR_G_4k_4g);
 }
 
-void init_kernel_desriptors(struct cpu_segment_selector_pack* pack){
+void init_kernel_desriptors(cpu_segment_selector_pack* pack){
 	cpu_descriptor cpu_descriptor_code, cpu_descriptor_stack, cpu_descriptor_data;
 	init_kernel_code_desc(&cpu_descriptor_code);
 	init_kernel_stack_desc(&cpu_descriptor_stack);
