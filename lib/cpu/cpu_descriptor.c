@@ -46,7 +46,7 @@ void cpu_descriptor_write_g_flag(cpu_descriptor* d, uint32_t g){
     d->r1 |= (g & 0x1) << 23;
 }
 
-void load_descriptor(cpu_descriptor* d, struct cpu_segment_selector* sel){
+void load_descriptor(cpu_descriptor* d, cpu_segment_selector* sel){
     cpu_descriptor* gtd = get_GDT();
     gtd[cpu_segment_selector_get_id(sel)] = *d;
 }

@@ -137,6 +137,6 @@ void cpu_descriptor_write_g_flag(cpu_descriptor* d, uint32_t g);
 void* get_GDT();
 
 
-void load_descriptor(cpu_descriptor* d, struct cpu_segment_selector* sel);
+void load_descriptor(cpu_descriptor* d, cpu_segment_selector* sel);
 
 #endif //CPU_DESCRIPTOR_H
