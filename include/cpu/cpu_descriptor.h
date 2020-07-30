@@ -38,19 +38,19 @@
 
 #define GDT_MAX 8192
 
-struct cpu_descriptor{
+typedef struct{
     uint32_t r2;
     uint32_t r1;
-};
+} cpu_descriptor;
 
 /*
         Defines the location of byte 0 of the segment within the 4-GByte linear address space. The
     processor puts together the three base address fields to form a single 32-bit value. Segment base
     addresses should be aligned to 16-byte boundaries. Although 16-byte alignment is not required,
     this alignment allows programs to maximize performance by aligning code and data on 16-byte
-    boundaries. 
+    boundaries.
 */
-void cpu_descriptor_write_base(struct cpu_descriptor* descr, uint32_t addr);
+void cpu_descriptor_write_base(cpu_descriptor* descr, uint32_t addr);
 
 
 
@@ -65,24 +65,24 @@ void cpu_descriptor_write_base(struct cpu_descriptor* descr, uint32_t addr);
     an expand-up or an expand-down segment. See Section 3.4.5.1, “Code- and Data-Segment
     Descriptor Types”, for more information about segment types. For expand-up segments, the offset
     in a logical address can range from 0 to the segment limit. Offsets greater than the segment limit
-    generate general-protection exceptions (#GP, for all segments other than SS) 
+    generate general-protection exceptions (#GP, for all segments other than SS)
     or stack-fault exceptions (#SS for the SS segment).
     For expand-down segments, the segment limit has the reverse
     function; the offset can range from the segment limit plus 1 to FFFFFFFFH or FFFFH, depending on
     the setting of the B flag. Offsets less than or equal to the segment limit generate general-protection
-    exceptions or stack-fault exceptions. Decreasing the value in the segment limit field for an expanddown 
+    exceptions or stack-fault exceptions. Decreasing the value in the segment limit field for an expanddown
     segment allocates new memory at the bottom of the segment's address space, rather than at
     the top. IA-32 architecture stacks always grow downwards, making this mechanism convenient for
     expandable stacks
 */
-void cpu_descriptor_write_limit(struct cpu_descriptor* descr, uint32_t limit);
+void cpu_descriptor_write_limit(cpu_descriptor* descr, uint32_t limit);
 
 
 /*
         Specifies whether the segment descriptor is for a system segment (S flag is clear) or a code or data
     segment (S flag is set).
 */
-void cpu_descriptor_write_s_type(struct cpu_descriptor* descr, uint32_t s);
+void cpu_descriptor_write_s_type(cpu_descriptor* descr, uint32_t s);
 
 
 /*
@@ -93,7 +93,7 @@ void cpu_descriptor_write_s_type(struct cpu_descriptor* descr, uint32_t s);
     Section 3.4.5.1, “Code- and Data-Segment Descriptor Types”, for a description of how this field is
     used to specify code and data-segment types.
 */
-void cpu_descriptor_write_type(struct cpu_descriptor* descr, uint32_t type);
+void cpu_descriptor_write_type(cpu_descriptor* descr, uint32_t type);
 
 
 /*
@@ -102,7 +102,7 @@ void cpu_descriptor_write_type(struct cpu_descriptor* descr, uint32_t type);
     for a description of the relationship of the DPL to the CPL of the executing code
     segment and the RPL of a segment selector.
 */
-void cpu_descriptor_write_dpl(struct cpu_descriptor* d, uint32_t dpl);
+void cpu_descriptor_write_dpl(cpu_descriptor* d, uint32_t dpl);
 
 
 /*
@@ -112,7 +112,7 @@ void cpu_descriptor_write_dpl(struct cpu_descriptor* d, uint32_t dpl);
     can use this flag to control which segments are actually loaded into physical memory at a given
     time. It offers a control in addition to paging for managing virtual memory.
 */
-void cpu_descriptor_write_p_flag(struct cpu_descriptor* d, uint32_t p);
+void cpu_descriptor_write_p_flag(cpu_descriptor* d, uint32_t p);
 
 
 /*
@@ -120,7 +120,7 @@ void cpu_descriptor_write_p_flag(struct cpu_descriptor* d, uint32_t p);
     segment, an expand-down data segment, or a stack segment. (This flag should always be set to 1
     for 32-bit code and data segments and to 0 for 16-bit code and data segments.)
 */
-void cpu_descriptor_write_d_flag(struct cpu_descriptor* de, uint32_t d);
+void cpu_descriptor_write_d_flag(cpu_descriptor* de, uint32_t d);
 
 
 /*
@@ -130,13 +130,13 @@ void cpu_descriptor_write_d_flag(struct cpu_descriptor* de, uint32_t d);
     granularity flag is set, the twelve least significant bits of an offset are not tested when checking the
     offset against the segment limit. For example, when the granularity flag is set, a limit of 0 results in
     valid offsets from 0 to 4095.
-*/  
-void cpu_descriptor_write_g_flag(struct cpu_descriptor* d, uint32_t g);
+*/
+void cpu_descriptor_write_g_flag(cpu_descriptor* d, uint32_t g);
 
 
 void* get_GDT();
 
 
-void load_descriptor(struct cpu_descriptor* d, struct cpu_segment_selector* sel);
+void load_descriptor(cpu_descriptor* d, struct cpu_segment_selector* sel);
 
 #endif //CPU_DESCRIPTOR_H

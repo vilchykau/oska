@@ -5,7 +5,7 @@
 #include "cpu/cpu_segment_selector.h"
 
 void init_gdt(){
-	struct cpu_descriptor* gtd = (struct cpu_descriptor*)get_GDT();
+	cpu_descriptor* gtd = (cpu_descriptor*)get_GDT();
 	for(int i = 0; i < GDT_MAX; ++i){
 		gtd[i].r1 = 0;
 		gtd[i].r2 = 0;
@@ -13,7 +13,7 @@ void init_gdt(){
 }
 
 uint8_t kernel_alloc_segment_selector(struct cpu_segment_selector* sel, uint16_t* start_pos){
-	struct cpu_descriptor* gtd = (struct cpu_descriptor*)get_GDT();
+	cpu_descriptor* gtd = (cpu_descriptor*)get_GDT();
 	for(; *start_pos < GDT_MAX; ++(*start_pos)){
 		if(gtd[*start_pos].r1 == 0 && gtd[*start_pos].r2 == 0){
 			cpu_segment_selector_set_id(sel, *start_pos);
@@ -25,7 +25,7 @@ uint8_t kernel_alloc_segment_selector(struct cpu_segment_selector* sel, uint16_t
 }
 
 uint8_t kernel_alloc_program_pack(struct cpu_segment_selector_pack* pack){
-	struct cpu_descriptor* gtd = (struct cpu_descriptor*)get_GDT();
+	cpu_descriptor* gtd = (cpu_descriptor*)get_GDT();
 	uint8_t id = 0;
 	for(int i = 1; i < GDT_MAX; ++i){
 		if(gtd[i].r1 == 0 && gtd[i].r2 == 0){
@@ -39,7 +39,7 @@ uint8_t kernel_alloc_program_pack(struct cpu_segment_selector_pack* pack){
 	return 0;
 }
 
-void init_kernel_code_desc(struct cpu_descriptor* d){
+void init_kernel_code_desc(cpu_descriptor* d){
 	cpu_descriptor_write_base(d, 0);
 	cpu_descriptor_write_limit(d, 0xFFFFFFFF);
 	cpu_descriptor_write_s_type(d, CPU_DESCRIPTOR_S_DATA);
@@ -50,7 +50,7 @@ void init_kernel_code_desc(struct cpu_descriptor* d){
 	cpu_descriptor_write_g_flag(d, CPU_DESCRIPTOR_G_4k_4g);
 }
 
-void init_kernel_stack_desc(struct cpu_descriptor* d){
+void init_kernel_stack_desc(cpu_descriptor* d){
 	cpu_descriptor_write_base(d, 0xFFFFFFFF);
 	cpu_descriptor_write_limit(d, 0x0);
 	cpu_descriptor_write_s_type(d, CPU_DESCRIPTOR_S_DATA);
@@ -61,7 +61,7 @@ void init_kernel_stack_desc(struct cpu_descriptor* d){
 	cpu_descriptor_write_g_flag(d, CPU_DESCRIPTOR_G_4k_4g);
 }
 
-void init_kernel_data_desc(struct cpu_descriptor* d){
+void init_kernel_data_desc(cpu_descriptor* d){
 	cpu_descriptor_write_base(d, 0);
 	cpu_descriptor_write_limit(d, 0xFFFFFFFF);
 	cpu_descriptor_write_s_type(d, CPU_DESCRIPTOR_S_DATA);
@@ -73,7 +73,7 @@ void init_kernel_data_desc(struct cpu_descriptor* d){
 }
 
 void init_kernel_desriptors(struct cpu_segment_selector_pack* pack){
-	struct cpu_descriptor cpu_descriptor_code, cpu_descriptor_stack, cpu_descriptor_data;
+	cpu_descriptor cpu_descriptor_code, cpu_descriptor_stack, cpu_descriptor_data;
 	init_kernel_code_desc(&cpu_descriptor_code);
 	init_kernel_stack_desc(&cpu_descriptor_stack);
 	init_kernel_data_desc(&cpu_descriptor_data);
